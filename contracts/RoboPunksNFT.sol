@@ -13,7 +13,7 @@ contract RoboPunkNFT is ERC721, Ownable{
     bool public isPublicMintEnabled;
     string internal baseTokenUri;
     address payable public withdrawWallet;
-    mapping(address => uint256) walletMints;
+    mapping(address => uint256) public walletMints;
 
     constructor() payable ERC721('RoboPunks', 'RP'){
         mintPrice = 0.02 ether;
@@ -26,7 +26,7 @@ contract RoboPunkNFT is ERC721, Ownable{
     }    
 
         function setIsPublicMintEnabled(bool isPublicMintEnabled_) external onlyOwner{
-            isPublicMintEnabled= isPublicMintEnabled_;
+            isPublicMintEnabled = isPublicMintEnabled_;
         }
         
         function setBaseUri (string calldata baseTokenUri_) external onlyOwner{
@@ -39,15 +39,15 @@ contract RoboPunkNFT is ERC721, Ownable{
         }
 
         function withraw() external onlyOwner{
-            (bool success, ) = withrawWallet.call{value: address(this).balance}('');
+            (bool success, ) = withdrawWallet.call{value: address(this).balance}('');
             require(success, 'withraw failed' );
         }
         
-        function mint(uint256, quantity_) public payable{
+        function mint(uint256 quantity_) public payable{
             require(isPublicMintEnabled, 'minting not enabled');
             require(msg.value == quantity_ * mintPrice, 'wrong mint value');
             require(totalSupply + quantity_ <= maxSupply, 'sold out');
-            require(walletMints[msg.sender] + quantity_ <= maxPerwallet, 'exceed max wallet');
+            require(walletMints[msg.sender] + quantity_ <= maxPerWallet, 'exceed max wallet');
 
             for(uint256 i=0; i < quantity_; i++){
                 uint256 newTokenId = totalSupply + 1;
