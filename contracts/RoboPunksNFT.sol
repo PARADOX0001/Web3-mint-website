@@ -3,7 +3,7 @@
 pragma solidity ^0.8.4;
 
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
-import '@openzeppelin/contracts/access.Ownable.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
 
 contract RoboPunkNFT is ERC721, Ownable{
     uint256 public mintPrice;
@@ -13,10 +13,10 @@ contract RoboPunkNFT is ERC721, Ownable{
     bool public isPublicMintEnabled;
     string internal baseTokenUri;
     address payable public withdrawWallet;
-    mapping(address => unint256 public walletMints);
+    mapping(address => uint256) walletMints;
 
     constructor() payable ERC721('RoboPunks', 'RP'){
-        mintPrice = 0.02 eteher;
+        mintPrice = 0.02 ether;
         totalSupply = 0;
         maxSupply = 1000;
         maxPerWallet = 3;
@@ -38,7 +38,7 @@ contract RoboPunkNFT is ERC721, Ownable{
             return string(abi.encodePacked(baseTokenUri, String.toString(tokenId_), ".json"));
         }
 
-        funtion withraw() external onlyOwner{
+        function withraw() external onlyOwner{
             (bool success, ) = withrawWallet.call{value: address(this).balance}('');
             require(success, 'withraw failed' );
         }
