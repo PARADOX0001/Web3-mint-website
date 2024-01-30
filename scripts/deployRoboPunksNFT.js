@@ -2,11 +2,11 @@ const hre = require("hardhat");
 
 async function main() {
   const RoboPunksNFT = await hre.ethers.getContractFactory("RoboPunksNFT");
-  const roboPunksNFT = await RoboPunksNFT.deploy("Hello, Hardhat!");
+  const roboPunksNFT = await RoboPunksNFT.deploy();
 
-  await roboPunksNFT.deployed();
+  await roboPunksNFT.waitForDeployment();
 
-  console.log("RoboPunksNFT deployed to:", roboPunksNFT.address);
+  console.log("RoboPunksNFT deployed to:", roboPunksNFT.getAddress());
 }
 
 main()
